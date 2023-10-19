@@ -4,7 +4,11 @@
 
 <br>
 
-# Description
+# Description BACK
+
+Consumer read from topic and serve message via SSE on  `http://localhost:8080/events?stream=messages`
+
+# Description FRONT
 
 The crypto-viz (Frontend) is a Progressive Web App. Built using React, Redux-toolkit, MUI, Service Worker tools.
 
