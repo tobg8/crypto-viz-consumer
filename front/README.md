@@ -26,11 +26,11 @@ use node 15 or higher (=> npm v7 or higher, to have lockfileVersion 2)
 
 ```shell
 npm install
-npm start
+npm run start:local-linux
 ```
 
 - **npm install**: To install all the dependencies.
-- **npm start**: Launch the application on the local server [http://localhost:3000](http:/localhost:3000.
+- **npm run start:local-linux**: Launch the application on the local server [http://localhost:3000](http:/localhost:3000.
 - **npm run lint**: For linting your code.
 - **npm run build**: Generate a production build.
 - **npm run test**: Run test files.
@@ -50,26 +50,16 @@ npm start
 ### File structure convention
 
 ```text
-│   App.css
 │   App.js
-│   index.css
 │   index.js
 │   logo.svg
 │   reportWebVitals.js
+│   Routes.js
 │   setupTests.js
 │
-├───assets : # (all assets comes here trad files + SVG)
-│   ├───animation
-│   ├───i18n
-│   └───images
-│   └───pictograms
-├───components : # (all UI dump components comes here button, textfield etc..)
-├───core : # (all configurations(theme for exemple), shared models etc.. )
 ├───features : # (all smart components comes here)
-├───hooks : # (all hooks)
+├───layout : # (create layout screens)
 ├───pages : # (all screens per route comes here)
-├───services : # (all api calls comes here)
-└───state : # (store and slices comes here)
 └───style : # (all colors)
 ```
 

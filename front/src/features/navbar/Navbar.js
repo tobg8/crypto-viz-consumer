@@ -16,8 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import { theme } from '../../style/theme';
 
 const pages = [
-  { title: 'Cryptocurrencies', link: '/' },
-  { title: 'Exchanges', link: '/' },
+  { title: 'Cryptocurrencies', link: '/cryptocurrencies' },
+  { title: 'Articles', link: '/articles' },
   { title: 'Community', link: '/' },
   { title: 'Products', link: '/' },
 ];
@@ -49,6 +49,7 @@ const Navbar = () => {
               noWrap
               component="a"
               color={theme.palette.text.primary}
+              onClick={() => navigate('/')}
               sx={{
                 mr: 2,
                 display: { xs: 'none', md: 'flex' },
@@ -56,6 +57,7 @@ const Navbar = () => {
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 textDecoration: 'none',
+                cursor: 'pointer',
               }}
             >
               CRYPTO-VIZ
@@ -88,6 +90,7 @@ const Navbar = () => {
                 sx={{
                   display: { xs: 'block', md: 'none' },
                   color: theme.palette.text.primary,
+                  cursor: 'pointer',
                 }}
               >
                 {pages.map((page, index) => (
@@ -107,6 +110,7 @@ const Navbar = () => {
               noWrap
               component="a"
               color={theme.palette.text.primary}
+              onClick={() => navigate('/')}
               sx={{
                 mr: 2,
                 display: { xs: 'flex', md: 'none' },
@@ -128,6 +132,7 @@ const Navbar = () => {
                     my: 2,
                     mx: 2,
                     color: theme.palette.text.primary,
+                    cursor: 'pointer',
                   }}
                 >
                   {page.title}

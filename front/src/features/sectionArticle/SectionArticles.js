@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import ArticeSkeleton from './ArticeSkeleton';
+import SectionArticlesSkeleton from './SectionArticlesSkeleton';
 import { Box, Button, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import moment from 'moment';
@@ -10,7 +10,7 @@ import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const Article = () => {
+const SectionArticles = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
   const [loaded, setLoaded] = useState(false);
@@ -22,8 +22,6 @@ const Article = () => {
           'https://run.mocky.io/v3/6c2392dc-51bd-4404-b2de-ac04c830c5b2'
         );
         const json = await response.data;
-        console.log(json);
-
         setData(json);
       } catch (error) {
         setError(error);
@@ -34,12 +32,11 @@ const Article = () => {
   }, []);
 
   console.log('error::=>', error);
-  console.log('loaded::=>', loaded);
 
   if (!loaded) {
     return (
       <div>
-        <ArticeSkeleton />
+        <SectionArticlesSkeleton />
       </div>
     );
   }
@@ -160,4 +157,4 @@ const Article = () => {
   );
 };
 
-export default Article;
+export default SectionArticles;
