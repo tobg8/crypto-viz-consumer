@@ -22,10 +22,12 @@ const GREY = {
 };
 
 const PRIMARY = {
-  main: '#CD1076',
-  light: '#fff',
-  lighter: '#ff008a',
+  main: '#3861fb',
+  light: '#2549a3',
+  lighterBlue: '#e3e9fa',
+  darkBlue: '#031d57',
 };
+
 const SECONDARY = {
   main: '#EFEFEF',
   black: '#000000',
@@ -36,11 +38,9 @@ const SECONDARY = {
 const palette = {
   primary: { ...PRIMARY },
   secondary: { ...SECONDARY },
+  white: '#fff',
   grey: GREY,
   text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-  action: {
-    active: GREY[600],
-  },
 };
 
 export default palette;
