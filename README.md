@@ -1,6 +1,6 @@
 <br>
 
-## [![Generic badge](https://img.shields.io/badge/Made_with-React-blueviolet.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/React-v18.1.0-brightgreen.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/reduxtoolkit-v1.8.1-brightgreen.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/MUI-v5.6.4-orange.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/Jest-v27.5.0-yellow.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/testinglibrary-v13.2.0-yellow.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/ESLint-v8.14.0-blueviolet.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/npm-v6.14.15-blue.svg)](https://shields.io/)
+## [![Generic badge](https://img.shields.io/badge/Made_with-React-blueviolet.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/React-v18.1.0-brightgreen.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/reduxtoolkit-v1.8.1-brightgreen.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/MUI-v5.6.4-orange.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/ESLint-v8.14.0-blueviolet.svg)](https://shields.io/)[![Generic badge](https://img.shields.io/badge/npm-v6.14.15-blue.svg)](https://shields.io/)
 
 <br>
 
@@ -26,11 +26,9 @@ cd crypto-viz-consumer
 
 ### Start the application
 
-use node 15 or higher (=> npm v7 or higher, to have lockfileVersion 2)
-
 ```shell
 npm install
-npm start
+npm run start:local-linux
 ```
 
 - **npm install**: To install all the dependencies.
@@ -62,11 +60,6 @@ npm start
 │   reportWebVitals.js
 │   setupTests.js
 │
-├───assets : # (all assets comes here trad files + SVG)
-│   ├───animation
-│   ├───i18n
-│   └───images
-│   └───pictograms
 ├───components : # (all UI dump components comes here button, textfield etc..)
 ├───core : # (all configurations(theme for exemple), shared models etc.. )
 ├───features : # (all smart components comes here)
