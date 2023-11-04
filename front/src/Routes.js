@@ -3,7 +3,7 @@ import { useRoutes } from 'react-router-dom';
 import Home from './pages/home/Home';
 import Layout from './layout/Layout';
 import Articles from './pages/articles/Articles';
-import Cryptocurrencies from './pages/cryptocurrencies/Cryptocurrencies';
+import CryptoCurrencies from './pages/cryptoCurrencies/CryptoCurrencies';
 
 const Routes = () => {
   return useRoutes([
@@ -12,7 +12,7 @@ const Routes = () => {
       element: <Layout />,
       children: [
         { path: '/', element: <Home /> },
-        { path: '/cryptocurrencies', element: <Cryptocurrencies /> },
+        { path: '/currencies', element: <CryptoCurrencies /> },
         { path: '/articles', element: <Articles /> },
       ],
     },

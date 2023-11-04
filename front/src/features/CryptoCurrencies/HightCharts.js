@@ -138,6 +138,9 @@ const HightCharts = () => {
         },
       },
     },
+    accessibility: {
+      enabled: false,
+    },
   });
 
   useEffect(() => {

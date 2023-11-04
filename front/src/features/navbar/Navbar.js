@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { theme } from '../../style/theme';
 
 const pages = [
-  { title: 'Cryptocurrencies', link: '/cryptocurrencies' },
+  { title: 'currencies', link: '/currencies' },
   { title: 'Articles', link: '/articles' },
   { title: 'Community', link: '/' },
   { title: 'Products', link: '/' },
