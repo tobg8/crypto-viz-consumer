@@ -1,6 +1,7 @@
 import React from 'react';
-import HomePageSectionArticle from '../../features/homePageSectionArticle/HomePageSectionArticle';
 import { Box, Typography } from '@mui/material';
+import SectionArticle from '../../features/sectionArticle/SectionArticle';
+import SectionListingCryptocurrency from '../../features/sectionListingCryptocurrency/SectionListingCryptocurrency';
 
 const Home = () => {
   return (
@@ -11,7 +12,7 @@ const Home = () => {
           Exploring the latest trends and news in the dynamic crypto landscape.
         </Typography>
       </Box>
-      <HomePageSectionArticle />
+      <SectionArticle />
       <Box px={1}>
         <Typography variant="h4">
           Today&apos;s Cryptocurrency Articles
@@ -21,6 +22,7 @@ const Home = () => {
           market with Today&apos;s Cryptocurrency Prices.
         </Typography>
       </Box>
+      <SectionListingCryptocurrency />
     </>
   );
 };

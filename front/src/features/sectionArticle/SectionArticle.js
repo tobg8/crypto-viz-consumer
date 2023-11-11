@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import HomePageSectionArticleSkeleton from './HomePageSectionArticleSkeleton';
+import SectionArticleSkeleton from './sectionArticleSkeleton';
 import { Box, Button, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import moment from 'moment';
@@ -8,9 +8,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import useHomePageArticlesStore from './homePageSectionArticle.store';
+import useHomePageArticlesStore from './sectionArticle.store';
 
-const HomePageSectionArticle = () => {
+const SectionArticle = () => {
   const { itemsArtciles, fetchHomePageArticles, isLoading, error } =
     useHomePageArticlesStore();
 
@@ -21,7 +21,7 @@ const HomePageSectionArticle = () => {
   if (isLoading) {
     return (
       <div>
-        <HomePageSectionArticleSkeleton />
+        <SectionArticleSkeleton />
       </div>
     );
   }
@@ -146,4 +146,4 @@ const HomePageSectionArticle = () => {
   );
 };
 
-export default HomePageSectionArticle;
+export default SectionArticle;
