@@ -5,8 +5,6 @@ const CryptoTrendingPosts = () => {
   const { trendingPostsItems, getTrendingPosts, isLoading } =
     trendingPostsStore((state) => state);
 
-  console.log('trendingPostsItems', trendingPostsItems);
-
   useEffect(() => {
     getTrendingPosts();
   }, []);
@@ -17,8 +15,8 @@ const CryptoTrendingPosts = () => {
 
   return (
     <div>
-      {trendingPostsItems.map((post) => (
-        <div key={post.id}>{post.sourceDisplayName}</div>
+      {trendingPostsItems.map((post, index) => (
+        <div key={index}>{post.sourceDisplayName}</div>
       ))}
     </div>
   );

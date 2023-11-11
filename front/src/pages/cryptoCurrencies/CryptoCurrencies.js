@@ -1,8 +1,9 @@
 import React from 'react';
-import CryptoStats from '../../features/CryptoCurrencies/cryptoStats/CryptoStats';
-import CryptoTrendingPosts from '../../features/CryptoCurrencies/cryptoTrendingPosts/CryptoTrendingPosts';
-import HightCharts from '../../features/CryptoCurrencies/HightCharts';
 import { Grid } from '@mui/material';
+import CryptoStats from '../../features/cryptoCurrencies/cryptoStats/CryptoStats';
+import CryptoTrendingPosts from '../../features/cryptoCurrencies/cryptoTrendingPosts/CryptoTrendingPosts';
+import HightCharts from '../../features/cryptoCurrencies/HightCharts';
+import CryptoHighcharts from '../../features/cryptoCurrencies/cryptoHighcharts/CryptoHighcharts';
 
 const CryptoCurrencies = () => {
   return (
@@ -12,6 +13,7 @@ const CryptoCurrencies = () => {
       </Grid>
       <Grid item xs={8}>
         <HightCharts />
+        <CryptoHighcharts />
       </Grid>
       <Grid item xs>
         <CryptoTrendingPosts />

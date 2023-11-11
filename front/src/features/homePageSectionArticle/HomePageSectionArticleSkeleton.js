@@ -1,7 +1,7 @@
 import { Box, Skeleton, Stack } from '@mui/material';
 import React from 'react';
 
-const SectionArticlesSkeleton = () => {
+const HomePageSectionArticleSkeleton = () => {
   return (
     <Box
       sx={{
@@ -237,4 +237,4 @@ const SectionArticlesSkeleton = () => {
   );
 };
 
-export default SectionArticlesSkeleton;
+export default HomePageSectionArticleSkeleton;

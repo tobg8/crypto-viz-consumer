@@ -41,29 +41,6 @@ const HightCharts = () => {
         },
       ],
       selected: 1,
-      // buttonTheme: {
-      //   fill: '#e3e9fa',
-      //   stroke: 'black',
-      //   borderRadius: '50px !important',
-      //   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-      //   style: {
-      //     color: 'white',
-      //     borderRadius: '50px !important',
-      //     boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-      //   },
-      //   states: {
-      //     borderRadius: '50px !important',
-      //     boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-      //     hover: {
-      //       fill: '#2549a3',
-      //       stroke: '#2549a3',
-      //     },
-      //     select: {
-      //       fill: '#2549a3',
-      //       stroke: 'white',
-      //     },
-      //   },
-      // },
       inputStyle: {
         color: '#2549a3',
       },

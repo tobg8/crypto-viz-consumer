@@ -11,3 +11,9 @@ export const getCoinStats = async () => {
     'https://run.mocky.io/v3/325f1a16-8f41-49a7-8cd7-fa6a6a64c9de'
   );
 };
+
+export const getDataHLCChart = async () => {
+  return await axiosInstance.get(
+    'https://run.mocky.io/v3/73fead6e-8a1a-404a-b674-60e4ec5974cf'
+  );
+};

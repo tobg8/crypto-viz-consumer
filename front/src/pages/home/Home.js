@@ -1,5 +1,5 @@
 import React from 'react';
-import SectionArticles from '../../features/sectionArticle/SectionArticles';
+import HomePageSectionArticle from '../../features/homePageSectionArticle/HomePageSectionArticle';
 import { Box, Typography } from '@mui/material';
 
 const Home = () => {
@@ -11,7 +11,7 @@ const Home = () => {
           Exploring the latest trends and news in the dynamic crypto landscape.
         </Typography>
       </Box>
-      <SectionArticles />
+      <HomePageSectionArticle />
       <Box px={1}>
         <Typography variant="h4">
           Today&apos;s Cryptocurrency Articles

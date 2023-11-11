@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import SectionArticlesSkeleton from './SectionArticlesSkeleton';
+import React, { useEffect } from 'react';
+import HomePageSectionArticleSkeleton from './HomePageSectionArticleSkeleton';
 import { Box, Button, Chip, Stack, Tooltip, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import moment from 'moment';
@@ -9,36 +8,26 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import useHomePageArticlesStore from './homePageSectionArticle.store';
 
-const SectionArticles = () => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState('');
-  const [loaded, setLoaded] = useState(false);
+const HomePageSectionArticle = () => {
+  const { itemsArtciles, fetchHomePageArticles, isLoading, error } =
+    useHomePageArticlesStore();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios(
-          'https://run.mocky.io/v3/6c2392dc-51bd-4404-b2de-ac04c830c5b2'
-        );
-        const json = await response.data;
-        setData(json);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoaded(true);
-      }
-    })();
-  }, []);
+    fetchHomePageArticles();
+  }, [fetchHomePageArticles]);
 
-  console.log('error::=>', error);
-
-  if (!loaded) {
+  if (isLoading) {
     return (
       <div>
-        <SectionArticlesSkeleton />
+        <HomePageSectionArticleSkeleton />
       </div>
     );
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   const pagination = {
@@ -61,7 +50,7 @@ const SectionArticles = () => {
         modules={[Pagination]}
         style={{ padding: '8px' }}
       >
-        {data.map(({ data }, index) => {
+        {itemsArtciles.map(({ data }, index) => {
           return (
             <SwiperSlide key={index}>
               <Box
@@ -157,4 +146,4 @@ const SectionArticles = () => {
   );
 };
 
-export default SectionArticles;
+export default HomePageSectionArticle;

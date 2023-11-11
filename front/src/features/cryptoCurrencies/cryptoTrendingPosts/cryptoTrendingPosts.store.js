@@ -1,24 +1,24 @@
 import { create } from 'zustand';
-import { getTrendingPosts } from '../../../services/cryptoCurrencies';
+import { getTrendingPosts } from '../../../services/cryptoCurrenciesApi';
 
 export const trendingPostsStore = create()((set, get) => ({
-  isLoading: false,
   trendingPostsItems: [],
+  isLoading: false,
+  error: null,
 
-  /**
-   * Fetch trending posts.
-   */
   getTrendingPosts: async () => {
-    set({ isLoading: true });
     try {
+      set({ isLoading: true, error: null });
       const { data } = await getTrendingPosts();
       set({
         trendingPostsItems: data.data,
         isLoading: false,
       });
-    } catch (err) {
-      console.log('Error occurred when fetching trending posts', err);
-      throw err;
+    } catch (error) {
+      set({
+        error: 'Error occurred when fetching trending posts',
+        isLoading: false,
+      });
     }
   },
 }));
