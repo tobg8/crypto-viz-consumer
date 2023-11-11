@@ -64,6 +64,9 @@ const ChartComponent = () => {
         upColor: '#16c784',
       },
     ],
+    accessibility: {
+      enabled: false,
+    },
   };
 
   return <HighchartsReact highcharts={Highcharts} options={options} />;
