@@ -11,7 +11,7 @@ func TestRetrieveKey(t *testing.T) {
 		in := "articles:supralol"
 		expect := "articles"
 
-		out := RetrieveKey(in)
+		out := RetrieveTopicKey(in)
 
 		assert.Equal(t, expect, out)
 	})
@@ -19,7 +19,7 @@ func TestRetrieveKey(t *testing.T) {
 		in := ""
 		expect := ""
 
-		out := RetrieveKey(in)
+		out := RetrieveTopicKey(in)
 
 		assert.Equal(t, expect, out)
 	})
