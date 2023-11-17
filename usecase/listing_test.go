@@ -5,12 +5,36 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/tobg8/crypto-viz-consumer/common"
 	"github.com/tobg8/crypto-viz-consumer/repository"
 )
 
+type listingRepository struct {
+	mock.Mock
+}
+
+func (lr *listingRepository) PostListing(c common.ListingDB, cID int64) (int64, error){
+	args := lr.Called(c, cID)
+	return args.Get(0).(int64), args.Error(1)
+}
+
+func TestNewListingUsecase(t *testing.T) {
+	t.Run("nominal", func(t *testing.T) {
+		in := repository.NewListingRepository()
+
+		expect := &listingUsecase{listingRepo: in}
+
+		out := NewListingUsecase(in)
+
+		assert.Equal(t, expect, out)
+	})
+}
+
 func TestTranformEventToListing(t *testing.T) {
+	lr := new(listingRepository)
+	lu := &listingUsecase{listingRepo: lr}
 	t.Run("nominal", func(t *testing.T) {
 		in := []byte(`
 		{
@@ -76,10 +100,86 @@ func TestTranformEventToListing(t *testing.T) {
 			LastUpdated: lastUpdated,
 		}
 
-		cr := repository.NewListingRepository()
-		lu := NewListingUsecase(cr)
 		out, err := lu.transformEventToListing(in)
 		assert.NoError(t, err)
 		assert.Equal(t, expect, out)
+	})
+}
+
+
+func TestTransformListingEventToListingDB(t *testing.T) {
+	lr := new(listingRepository)
+	lu := &listingUsecase{listingRepo: lr}
+	t.Run("nominal", func(t *testing.T) {
+		in := common.ListingEvent{
+			CurrentPrice: 12,
+			MarketCap: 182828,
+			MarketCapRank: 1272.7,
+			FullyDilutedValuation: 12828.77,
+			TotalVolume: 122,
+			High24H: 0.223,
+			Low24H: -012.3,
+			PriceChange24H: 12,
+			PriceChangePercentage24H: 199,
+			MarketCapChange24H: 100,
+			MarketCapChangePercentage24H: 199.8,
+			CirculatingSupply: 10,
+			TotalSupply: 120,
+			MaxSupply: 1,
+			Ath: 10000,
+			AthChangePercentage: 12.3,
+			AthDate: time.Time{},
+			Atl: 100,
+			AtlChangePercentage: 01,
+			AtlDate: time.Time{},
+		}
+
+		expect := common.ListingDB{
+			CurrentPrice: 12,
+			MarketCap: 182828,
+			MarketCapRank: 1272.7,
+			FullyDilutedValuation: 12828.77,
+			TotalVolume: 122,
+			High24H: 0.223,
+			Low24H: -012.3,
+			PriceChange24H: 12,
+			PriceChangePercentage24H: 199,
+			MarketCapChange24H: 100,
+			MarketCapChangePercentage24H: 199.8,
+			CirculatingSupply: 10,
+			TotalSupply: 120,
+			MaxSupply: 1,
+			Ath: 10000,
+			AthChangePercentage: 12.3,
+			AthDate: time.Time{},
+			Atl: 100,
+			AtlChangePercentage: 01,
+			AtlDate: time.Time{},
+		}
+
+		out := lu.transformListingEventToListingDB(in)
+		assert.Equal(t, expect, out)
+	})
+}
+
+func TestPostListing(t *testing.T) {
+	t.Run("nominal", func(t *testing.T) {
+		lr := new(listingRepository)
+		lu := &listingUsecase{listingRepo: lr}
+
+		post := common.ListingDB{
+			CurrentPrice: 12,
+			MarketCap: 182828,
+			MarketCapRank: 1272.7,
+			FullyDilutedValuation: 12828.77,
+			TotalVolume: 122,
+		}
+
+		cID := int64(12)
+
+		lr.On("PostListing", post, cID).Return(int64(12), nil)
+		id, err := lu.postListing(post, cID)
+		assert.NoError(t, err)
+		assert.Equal(t, cID, id)
 	})
 }

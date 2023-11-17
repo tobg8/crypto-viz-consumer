@@ -2,6 +2,7 @@ package repository
 
 import (
 	"errors"
+	"log"
 
 	"github.com/tobg8/crypto-viz-consumer/common"
 )
@@ -20,5 +21,7 @@ func NewListingRepository() ListingRepository {
 
 func (cr *listingRepository) PostListing(c common.ListingDB, cID int64) (int64, error) {
 	// J'insère mon listing avec ma catégorieID associé
+	log.Printf("post listing: %v", c.CurrentPrice)
+
 	return 0, errors.New("not implemented")
 }

@@ -34,6 +34,9 @@ func (cu *currencyUsecase) retrieveCurrencyFromListing(l common.ListingEvent) co
 }
 
 func (cu *currencyUsecase) postCurrency(c common.CurrencyDB) (int64, error) {
+	if c.Identifier == "" || c.ImageURL == "" || c.Name == "" || c.Symbol == "" {
+		return 0, fmt.Errorf("could not post, currency is empty")
+	}
 	currencyID, err := cu.currencyRepo.PostCurrency(c)
 	if err != nil {
 		return 0, fmt.Errorf("could not insert currency: %v", c)
