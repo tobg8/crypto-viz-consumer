@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-func RetrieveKey(s string) string {
+func RetrieveTopicKey(s string) string {
 	if s == "" {
 		return ""
 	}

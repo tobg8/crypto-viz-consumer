@@ -1,20 +1,22 @@
 package usecase
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/tobg8/crypto-viz-consumer/common"
+	"github.com/tobg8/crypto-viz-consumer/pocketbase"
 	"github.com/tobg8/crypto-viz-consumer/repository"
 )
 
 func InitUsecases(message *kafka.Message) error {
-	topicName := common.RetrieveKey(string(message.Key))
+	topicName := common.RetrieveTopicKey(string(message.Key))
 
-	lr := repository.NewListingRepository()
+	pc := pocketbase.NewClient("http://67.205.163.103:8081")
+	lr := repository.NewListingRepository(pc)
+	cr := repository.NewCurrencyRepository(pc)
+
 	lu := NewListingUsecase(lr)
-	cr := repository.NewCurrencyRepository()
 	cu := NewCurrencyUsecase(cr)
 
 	switch topicName {
@@ -22,8 +24,6 @@ func InitUsecases(message *kafka.Message) error {
 		log.Print("articles usecase")
 		log.Print("not implemented")
 	case "listing":
-		log.Print("listing usecase")
-
 		listing, err := lu.transformEventToListing(message.Value)
 		if err != nil {
 			log.Print(err)
@@ -36,21 +36,23 @@ func InitUsecases(message *kafka.Message) error {
 		// je veux insérer les currency
 		currencyID, err := cu.postCurrency(currencyDB)
 		if err != nil {
-			return fmt.Errorf("could not insert currency: %v", currencyDB)
+			return err
 		}
 
 		// Je récupère forcement la currencyID - j'insère mon listing
 		listingID, err := lu.postListing(listingDB, currencyID)
 		if err != nil {
-			return fmt.Errorf("could not insert listing: %v", listingDB)
+			return err
 		}
 
+		log.Printf("insert listing: %v. %v", listingID, "☺️")
 		// si je success alors je veux update ma currency et y ajouter le listingID
-		err = cu.updateCurrency(currencyID, listingID)
+		err = cu.updateCurrency(currencyID, listingID, currencyDB)
 		if err != nil {
-			// Si je ne peux pas link mon listing et ma currency je supprime le listing
-			return fmt.Errorf("could not link currency: %v to listing: %v", currencyDB, listingDB)
+			// TODO Si je ne peux pas link mon listing et ma currency je supprime le listing
+			return err
 		}
+		log.Printf("update currency: %v. %v", currencyID, "☺️")
 	case "prices":
 		log.Print("price usecase")
 		log.Print("not implemented")

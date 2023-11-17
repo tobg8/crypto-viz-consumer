@@ -3,6 +3,7 @@ package usecase
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	"github.com/tobg8/crypto-viz-consumer/common"
 	"github.com/tobg8/crypto-viz-consumer/repository"
@@ -11,7 +12,7 @@ import (
 type ListingUsecase interface {
 	transformEventToListing(listing []byte) (common.ListingEvent, error)
 	transformListingEventToListingDB(l common.ListingEvent) common.ListingDB
-	postListing(l common.ListingDB, cID int64) (int64, error)
+	postListing(l common.ListingDB, cID string) (string, error)
 }
 
 type listingUsecase struct {
@@ -34,34 +35,48 @@ func (lu *listingUsecase) transformEventToListing(listing []byte) (common.Listin
 }
 
 func (lu *listingUsecase) transformListingEventToListingDB(l common.ListingEvent) common.ListingDB {
+	priceString := strconv.FormatFloat(l.CurrentPrice, 'g', 5, 64)
 	return common.ListingDB{
-		CurrentPrice: l.CurrentPrice,
-		MarketCap: l.MarketCap,
-		MarketCapRank: l.MarketCapRank,
-		FullyDilutedValuation: l.FullyDilutedValuation,
-		TotalVolume: l.TotalVolume,
-		High24H: l.High24H,
-		Low24H: l.Low24H,
-		PriceChange24H: l.PriceChange24H,
-		PriceChangePercentage24H: l.PriceChangePercentage24H,
-		MarketCapChange24H: l.MarketCapChange24H,
+		CurrentPrice:                 l.CurrentPrice,
+		MarketCap:                    l.MarketCap,
+		MarketCapRank:                l.MarketCapRank,
+		FullyDilutedValuation:        l.FullyDilutedValuation,
+		TotalVolume:                  l.TotalVolume,
+		High24H:                      l.High24H,
+		Low24H:                       l.Low24H,
+		PriceChange24H:               l.PriceChange24H,
+		PriceChangePercentage24H:     l.PriceChangePercentage24H,
+		MarketCapChange24H:           l.MarketCapChange24H,
 		MarketCapChangePercentage24H: l.MarketCapChangePercentage24H,
-		CirculatingSupply: l.CirculatingSupply,
-		TotalSupply: l.TotalSupply,
-		MaxSupply: l.MaxSupply,
-		Ath: l.Ath,
-		AthChangePercentage: l.AthChangePercentage,
-		AthDate: l.AthDate,
-		Atl: l.Atl,
-		AtlChangePercentage: l.AtlChangePercentage,
-		AtlDate: l.AtlDate,
+		CirculatingSupply:            l.CirculatingSupply,
+		TotalSupply:                  l.TotalSupply,
+		MaxSupply:                    l.MaxSupply,
+		Ath:                          l.Ath,
+		AthChangePercentage:          l.AthChangePercentage,
+		AthDate:                      l.AthDate,
+		Atl:                          l.Atl,
+		AtlChangePercentage:          l.AtlChangePercentage,
+		AtlDate:                      l.AtlDate,
+		KafkaID:                      l.ID + l.Name + priceString,
 	}
 }
 
-func (lu *listingUsecase) postListing(l common.ListingDB, cID int64) (int64, error) {
-	listingID, err := lu.listingRepo.PostListing(l, cID)
+func (lu *listingUsecase) postListing(l common.ListingDB, cID string) (string, error) {
+	verifyListingInDB, err := lu.listingRepo.QueryListingByKafkaID(l.KafkaID)
 	if err != nil {
-		return 0, fmt.Errorf("could not insert listing: %v", l)
+		err = lu.listingRepo.PostListing(l, cID)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	if verifyListingInDB != "" {
+		return verifyListingInDB, fmt.Errorf("already processed listing")
+	}
+
+	listingID, err := lu.listingRepo.QueryListingByKafkaID(l.KafkaID)
+	if err != nil {
+		return "", err
 	}
 
 	return listingID, nil
