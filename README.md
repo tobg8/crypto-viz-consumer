@@ -11,8 +11,8 @@ Consumer read from topic and save message to a database instance.
 ## Initialization
 
 - Install go version 1.18
-- In main directory run go mod tidy to download packages
-- Go run main.go to run the app
+- In main directory run ```go mod tidy``` to download packages
+- ```go run main.go``` to run the app
 
 ___ 
 
