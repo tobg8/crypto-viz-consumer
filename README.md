@@ -4,11 +4,19 @@
 
 <br>
 
-# Description BACK
+# CONSUMER
 
-Consumer read from topic and serve message via SSE on `http://localhost:8080/events?stream=messages`
+Consumer read from topic and save message to a database instance.
 
-# Description FRONT
+## Initialization
+
+- Install go version 1.18
+- In main directory run go mod tidy to download packages
+- Go run main.go to run the app
+
+___ 
+
+# FRONT
 
 The crypto-viz (Frontend) is a Progressive Web App. Built using React, Redux-toolkit, MUI, Service Worker tools.
 
