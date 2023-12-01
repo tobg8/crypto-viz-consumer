@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getHomePageArticles } from '../../services/homePageArticlesApi';
+import { getHomePageArticles } from '../../services/homePageApi';
 
 const useHomePageArticlesStore = create()((set) => ({
   itemsArtciles: [],

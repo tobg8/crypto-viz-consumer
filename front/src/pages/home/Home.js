@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import SectionArticle from '../../features/sectionArticle/SectionArticle';
-import SectionListingCryptocurrency from '../../features/sectionListingCryptocurrency/SectionListingCryptocurrency';
+import ListingCryptocurrency from '../../features/listingCryptocurrency/ListingCryptocurrency';
 
 const Home = () => {
   return (
@@ -22,7 +22,7 @@ const Home = () => {
           market with Today&apos;s Cryptocurrency Prices.
         </Typography>
       </Box>
-      <SectionListingCryptocurrency />
+      <ListingCryptocurrency />
     </>
   );
 };
