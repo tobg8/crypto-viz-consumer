@@ -15,14 +15,29 @@ func InitUsecases(message *kafka.Message) error {
 	pc := pocketbase.NewClient("http://67.205.163.103:8081")
 	lr := repository.NewListingRepository(pc)
 	cr := repository.NewCurrencyRepository(pc)
+	ar := repository.NewArticleRepository(pc)
 
 	lu := NewListingUsecase(lr)
 	cu := NewCurrencyUsecase(cr)
+	au := NewArticleUsecase(ar)
 
 	switch topicName {
 	case "articles":
 		log.Print("articles usecase")
-		log.Print("not implemented")
+		article, err := au.transformEventToArticle(message.Value)
+		if err != nil {
+			log.Print(err)
+		}
+		linkedCurrencies, err := au.getCurrencies(article)
+		if err != nil {
+			log.Print(err)
+		}
+		articleDB := au.transformArticleForDB(article, linkedCurrencies)
+		err = au.postArticle(articleDB)
+		if err != nil {
+			log.Print(err)
+		}
+		log.Printf("insert article: %v. %v", articleDB.Title, "☺️")
 	case "listing":
 		listing, err := lu.transformEventToListing(message.Value)
 		if err != nil {

@@ -12,6 +12,16 @@ type ArticleEvent struct {
 	CreatedAt   time.Time       `json:"created_at"`
 }
 
+type ArticleEventDB struct {
+	Kind        string          `json:"kind,omitempty"`
+	Source      string          `json:"source,omitempty"`
+	Title       string          `json:"title"`
+	URL         string          `json:"url"`
+	Currencies  []string 				`json:"currencies"`
+	PublishedAt time.Time       `json:"published_at"`
+	CreatedAt   time.Time       `json:"created_at"`
+}
+
 type CurrencyEvent struct {
 	Code  string `json:"code"`
 	Title string `json:"title"`
