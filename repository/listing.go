@@ -31,17 +31,16 @@ func (cr *listingRepository) PostListing(c common.ListingDB, cID string) error {
 	err := cr.pc.Create("listing", c)
 	if err != nil {
 		log.Print(err)
-		return  errors.New("could not insert listing")
+		return errors.New("could not insert listing")
 	}
 
-	return  nil
+	return nil
 }
-
 
 func (cr *listingRepository) QueryListingByKafkaID(kafkaID string) (string, error) {
 	resp, err := cr.pc.QueryByAth(kafkaID)
 	if err != nil {
-		return "", errors.New("could not query listing")
+		return "", fmt.Errorf("could not query listing with kafkaID %v", kafkaID)
 	}
 
 	var respParsed common.ListingResponse
