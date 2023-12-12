@@ -71,7 +71,7 @@ func (lu *listingUsecase) postListing(l common.ListingDB, cID string) (string, e
 	}
 
 	if verifyListingInDB != "" {
-		return verifyListingInDB, fmt.Errorf("already processed listing")
+		return verifyListingInDB, fmt.Errorf("already processed listing %v", verifyListingInDB)
 	}
 
 	listingID, err := lu.listingRepo.QueryListingByKafkaID(l.KafkaID)
