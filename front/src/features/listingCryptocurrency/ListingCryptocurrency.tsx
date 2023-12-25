@@ -49,13 +49,13 @@ const SectionListingCryptocurrency = () => {
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell>Coin</TableCell>
-            <TableCell align="right">Current Price</TableCell>
-            <TableCell align="right">Price change 24h</TableCell>
-            <TableCell align="right">Price change percentage 24h</TableCell>
-            <TableCell align="right">High 24h</TableCell>
-            <TableCell align="right">Low 24h</TableCell>
-            <TableCell align="right">Market cap</TableCell>
-            <TableCell align="right">Total volume</TableCell>
+            <TableCell sx={{ fontSize: '14px' }} align="right">Current Price</TableCell>
+            <TableCell sx={{ fontSize: '14px' }} align="right">Price change 24h</TableCell>
+            <TableCell sx={{ fontSize: '14px' }} align="right">Price change percentage 24h</TableCell>
+            <TableCell sx={{ fontSize: '14px' }} align="right">High 24h</TableCell>
+            <TableCell sx={{ fontSize: '14px' }} align="right">Low 24h</TableCell>
+            <TableCell sx={{ fontSize: '14px' }} align="right">Market cap</TableCell>
+            <TableCell sx={{ fontSize: '14px' }} align="right">Total volume</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
