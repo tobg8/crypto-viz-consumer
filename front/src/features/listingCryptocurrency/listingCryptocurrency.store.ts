@@ -41,6 +41,8 @@ const useListingCryptocurencyStore = create<IUseListingCryptocurencyStore>(
       try {
         set({ isLoading: true, error: null });
         const response = await axios.get('http://localhost:3001/currencies');
+        console.log('currencies', response);
+
         set({ itemsCurrency: response.data, isLoading: false });
       } catch (error) {
         set({ error: 'Failed to fetch currency', isLoading: false });

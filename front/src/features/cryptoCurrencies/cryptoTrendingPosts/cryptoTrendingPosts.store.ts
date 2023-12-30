@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { IArticles } from 'features/sectionArticle/ core/interfaces';
+import { IArticles } from 'features/sectionArticle/core/interfaces';
 import { getTrendingPosts } from 'services/cryptoCurrenciesApi';
 
 interface IUsetrendingPostsStore {
@@ -10,7 +10,7 @@ interface IUsetrendingPostsStore {
 }
 
 export const usetrendingPostsStore = create<IUsetrendingPostsStore>()(
-  (set, get) => ({
+  (set) => ({
     trendingPostsItems: [],
     isLoading: false,
     error: null,

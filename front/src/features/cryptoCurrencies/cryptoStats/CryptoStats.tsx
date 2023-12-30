@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useCoinStatsStore } from './cryptoStats.store';
 
 const CryptoStats = () => {
@@ -6,6 +6,7 @@ const CryptoStats = () => {
 
   useEffect(() => {
     getCoinStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {

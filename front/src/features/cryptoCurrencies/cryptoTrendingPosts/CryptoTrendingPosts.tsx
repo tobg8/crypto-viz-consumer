@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { usetrendingPostsStore } from './cryptoTrendingPosts.store';
 
 const CryptoTrendingPosts = () => {
-  const { trendingPostsItems, getTrendingPosts, isLoading } =
+  const { getTrendingPosts, isLoading } =
     usetrendingPostsStore()
 
   useEffect(() => {
     getTrendingPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isLoading) {

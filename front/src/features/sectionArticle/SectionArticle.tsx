@@ -13,7 +13,7 @@ const SectionArticle = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetchHomePageArticles]);
 
-
+  console.log(itemsArtciles)
   if (isLoading) return <SectionArticleSkeleton />;
   if (error) return <div>Error: {error}</div>;
 

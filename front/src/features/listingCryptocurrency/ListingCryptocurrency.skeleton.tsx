@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Skeleton, Avatar, Stack } from '@mui/material';
 
 const SkeletonBox = () => (
