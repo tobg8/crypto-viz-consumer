@@ -181,7 +181,7 @@ func (c *Client) QueryByID(cID string) ([]byte, error) {
 	return resp.Body(), nil
 }
 
-func (c *Client) QueryByAth(lID string) ([]byte, error) {
+func (c *Client) QueryByKafkaID(lID string) ([]byte, error) {
 	request := c.client.R().
 		SetHeader("Content-Type", "application/json")
 
