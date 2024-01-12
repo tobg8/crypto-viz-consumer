@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/tobg8/crypto-viz-consumer/common"
 	"github.com/tobg8/crypto-viz-consumer/repository"
@@ -11,7 +12,7 @@ import (
 
 type ListingUsecase interface {
 	transformEventToListing(listing []byte) (common.ListingEvent, error)
-	transformListingEventToListingDB(l common.ListingEvent) common.ListingDB
+	transformListingEventToListingDB(l common.ListingEvent) *common.ListingDB
 	postListing(l common.ListingDB, cID string) (string, error)
 }
 
@@ -34,9 +35,10 @@ func (lu *listingUsecase) transformEventToListing(listing []byte) (common.Listin
 	return listingEvent, nil
 }
 
-func (lu *listingUsecase) transformListingEventToListingDB(l common.ListingEvent) common.ListingDB {
+func (lu *listingUsecase) transformListingEventToListingDB(l common.ListingEvent) *common.ListingDB {
 	priceString := strconv.FormatFloat(l.CurrentPrice, 'g', 5, 64)
-	return common.ListingDB{
+	kafkaID := strings.ReplaceAll(strings.ToLower(l.ID+l.Name+priceString), " ", "")
+	return &common.ListingDB{
 		CurrentPrice:                 l.CurrentPrice,
 		MarketCap:                    l.MarketCap,
 		MarketCapRank:                l.MarketCapRank,
@@ -57,7 +59,7 @@ func (lu *listingUsecase) transformListingEventToListingDB(l common.ListingEvent
 		Atl:                          l.Atl,
 		AtlChangePercentage:          l.AtlChangePercentage,
 		AtlDate:                      l.AtlDate,
-		KafkaID:                      l.ID + l.Name + priceString,
+		KafkaID:                      kafkaID,
 	}
 }
 

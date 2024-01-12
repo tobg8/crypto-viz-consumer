@@ -111,6 +111,8 @@ type Listing struct {
 	Atl                          float64 `json:"atl"`
 	AtlChangePercentage          float64 `json:"atl_change_percentage"`
 	CurrencyID                   string  `json:"currency_id"`
+	Created                      string  `json:"created"`
+	Updated                      string  `json:"updated"`
 }
 
 type CurrencyDBResponse struct {

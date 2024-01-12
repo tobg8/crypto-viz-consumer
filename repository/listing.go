@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"sort"
 
 	"github.com/tobg8/crypto-viz-consumer/common"
 	"github.com/tobg8/crypto-viz-consumer/pocketbase"
@@ -38,7 +39,7 @@ func (cr *listingRepository) PostListing(c common.ListingDB, cID string) error {
 }
 
 func (cr *listingRepository) QueryListingByKafkaID(kafkaID string) (string, error) {
-	resp, err := cr.pc.QueryByAth(kafkaID)
+	resp, err := cr.pc.QueryByKafkaID(kafkaID)
 	if err != nil {
 		return "", fmt.Errorf("could not query listing with kafkaID %v", kafkaID)
 	}
@@ -48,9 +49,9 @@ func (cr *listingRepository) QueryListingByKafkaID(kafkaID string) (string, erro
 		return "", fmt.Errorf("could not marshal listing: %w", err)
 	}
 
-	if len(respParsed.Items) > 0 && respParsed.Items[0].ID != "" {
-		return respParsed.Items[0].ID, nil
-	}
+	sort.Slice(respParsed.Items, func(i, j int) bool {
+		return respParsed.Items[i].Created > respParsed.Items[j].Created
+	})
 
 	if len(respParsed.Items) == 0 {
 		return "", fmt.Errorf("listing does not exist")

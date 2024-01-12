@@ -50,6 +50,7 @@ func InitUsecases(message *kafka.Message) error {
 		listingDB := lu.transformListingEventToListingDB(listing)
 		currencyDB := cu.retrieveCurrencyFromListing(listing)
 
+		log.Print(listingDB.KafkaID)
 		// je veux insérer les currency
 		currencyID, err := cu.postCurrency(currencyDB)
 		if err != nil {
@@ -57,7 +58,7 @@ func InitUsecases(message *kafka.Message) error {
 		}
 
 		// Je récupère forcement la currencyID - j'insère mon listing
-		listingID, err := lu.postListing(listingDB, currencyID)
+		listingID, err := lu.postListing(*listingDB, currencyID)
 		if err != nil {
 			return err
 		}
