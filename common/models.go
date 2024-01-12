@@ -149,3 +149,30 @@ type PriceDB struct {
 	CurrencySymbol string
 	CurrencyID     string `json:"currency"`
 }
+
+type OhlcDB struct {
+	Open           float64 `json:"open"`
+	Range          string  `json:"range"`
+	Timestamp      int64   `json:"timestamp"`
+	CurrencySymbol string  `json:"currency"`
+	CurrencyID     string  `json:"currency_id"`
+	High           float64 `json:"high"`
+	Low            float64 `json:"low"`
+	Close          float64 `json:"close"`
+}
+
+type OhlcDBEvent struct {
+	Open       float64 `json:"open"`
+	Range      string  `json:"range"`
+	Timestamp  int64   `json:"timestamp"`
+	CurrencyID string  `json:"currency"`
+	High       float64 `json:"high"`
+	Low        float64 `json:"low"`
+	Close      float64 `json:"close"`
+}
+
+type OhlcEvent struct {
+	Ohlc           []OhlcDB `json:"Ohlc"`
+	CurrencySymbol string   `json:"currency"`
+	Range          string   `json:"range"`
+}

@@ -18,11 +18,13 @@ func InitUsecases(message *kafka.Message) error {
 	cr := repository.NewCurrencyRepository(pc)
 	ar := repository.NewArticleRepository(pc)
 	pr := repository.NewPriceRepository(pc)
+	or := repository.NewOhlcRepository(pc)
 
 	lu := NewListingUsecase(lr)
 	cu := NewCurrencyUsecase(cr)
 	au := NewArticleUsecase(ar)
 	pu := NewPriceUsecase(pr)
+	ou := NewOhlcUsecase(or)
 
 	switch topicName {
 	case "articles":
@@ -50,7 +52,6 @@ func InitUsecases(message *kafka.Message) error {
 		listingDB := lu.transformListingEventToListingDB(listing)
 		currencyDB := cu.retrieveCurrencyFromListing(listing)
 
-		log.Print(listingDB.KafkaID)
 		// je veux insérer les currency
 		currencyID, err := cu.postCurrency(currencyDB)
 		if err != nil {
@@ -71,6 +72,39 @@ func InitUsecases(message *kafka.Message) error {
 			return err
 		}
 		// log.Printf("[CURRENCY UPDATE]: %v. %v", currencyID, "☺️")
+	case "ohlc":
+		ohlc, err := ou.transformEventToOhlc(message.Value)
+		if err != nil {
+			return err
+		}
+
+		var wg sync.WaitGroup
+		// Use a goroutine to  process ohlc
+		ch := make(chan common.OhlcDBEvent, len(ohlc))
+
+		for _, v := range ohlc {
+			wg.Add(1)
+			go func(ohlc common.OhlcDBEvent) {
+				defer wg.Done()
+
+				// Insert the price into the database
+				err := or.PostOhlc(ohlc)
+				if err != nil {
+					log.Printf("Error inserting into the database: %v", err)
+				}
+				log.Printf("[OHLC] %v for range %v", ohlc.CurrencyID, ohlc.Range)
+			}(v)
+		}
+
+		go func() {
+			wg.Wait()
+			close(ch)
+		}()
+
+		wg.Wait()
+
+		return nil
+
 	case "price":
 		prices, err := pu.transformEventToPrices(message.Value)
 		if err != nil {

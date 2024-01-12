@@ -55,32 +55,6 @@ func (pu *priceUsecase) transformEventToPrices(prices []byte) ([]common.PriceDB,
 		pricesDB = append(pricesDB, price)
 	}
 
-	for _, v := range priceEvent.MarketCaps {
-		marketCap := common.PriceDB{
-			Value:          v.Value,
-			Type:           v.Type,
-			Range:          v.Range,
-			Timestamp:      v.Timestamp,
-			CurrencySymbol: v.Currency,
-			CurrencyID:     currencyID,
-		}
-
-		pricesDB = append(pricesDB, marketCap)
-	}
-
-	for _, v := range priceEvent.TotalVolumes {
-		totalVolume := common.PriceDB{
-			Value:          v.Value,
-			Type:           v.Type,
-			Range:          v.Range,
-			Timestamp:      v.Timestamp,
-			CurrencySymbol: v.Currency,
-			CurrencyID:     currencyID,
-		}
-
-		pricesDB = append(pricesDB, totalVolume)
-	}
-
 	return pricesDB, nil
 }
 

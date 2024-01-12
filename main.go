@@ -21,7 +21,7 @@ func main() {
 		panic(fmt.Sprintf("Failed to create consumer: %s", err))
 	}
 
-	err = kafkaConsumer.Consumer.SubscribeTopics([]string{"articles", "listing", "prices"}, nil)
+	err = kafkaConsumer.Consumer.SubscribeTopics([]string{"articles", "listing", "prices", "ohlc"}, nil)
 	if err != nil {
 		log.Print(err)
 	}

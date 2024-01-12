@@ -9,32 +9,32 @@ import (
 	"github.com/tobg8/crypto-viz-consumer/pocketbase"
 )
 
-type PriceRepository interface {
-	PostPrice(c common.PriceDB) error
+type OhlcRepository interface {
+	PostOhlc(c common.OhlcDBEvent) error
 	GetCurrencyBySymbol(cn string) (string, error)
 }
 
-type priceRepository struct {
+type ohlcRepository struct {
 	pc *pocketbase.Client
 }
 
-func NewPriceRepository(pc *pocketbase.Client) PriceRepository {
-	return &priceRepository{
+func NewOhlcRepository(pc *pocketbase.Client) OhlcRepository {
+	return &ohlcRepository{
 		pc: pc,
 	}
 }
 
-func (cr *priceRepository) PostPrice(c common.PriceDB) error {
-	err := cr.pc.Create("prices", c)
+func (cr *ohlcRepository) PostOhlc(c common.OhlcDBEvent) error {
+	err := cr.pc.Create("ohlc", c)
 	if err != nil {
-		return fmt.Errorf("could not insert price: %v, %w", c.CurrencySymbol, err)
+		return fmt.Errorf("could not insert ohlc: %v, %w", c.CurrencyID, err)
 	}
 
 	return nil
 }
 
-func (cr *priceRepository) GetCurrencyBySymbol(cn string) (string, error) {
-	// Je récupère une currencyID via son symbol
+func (cr *ohlcRepository) GetCurrencyBySymbol(cn string) (string, error) {
+	// Je récupère une currencyID via son name
 	resp, err := cr.pc.QueryBySymbol(cn)
 	if err != nil {
 		return "", fmt.Errorf("could not query currency symbol: %v", cn)
