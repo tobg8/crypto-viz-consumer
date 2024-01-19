@@ -46,5 +46,8 @@ func main() {
 	}
 
 	// Close Kafka consumer when done
-	kafkaConsumer.Consumer.Close()
+	err = kafkaConsumer.Consumer.Close()
+	if err != nil {
+		return
+	}
 }
