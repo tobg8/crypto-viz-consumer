@@ -10,11 +10,11 @@
 ws://api/v1/trending-posts
 ```
 
-### Description
+## Description
 
 The Trending Posts API provides real-time listings of articles. Connect to this WebSocket endpoint to receive updates on the latest trending articles. The data format includes essential information such as article ID, title, description, link, image URL, publication date, author, and categories.
 
-### Expected Response Format :
+## Expected Response Format :
 
 ```json
 [
@@ -33,7 +33,7 @@ The Trending Posts API provides real-time listings of articles. Connect to this 
 ]
 ```
 
-### Example Data :
+## Example Data :
 
 ```json
 [
@@ -62,11 +62,11 @@ The Trending Posts API provides real-time listings of articles. Connect to this 
 ws://api/v1/cryptocurrency/listing
 ```
 
-### Description
+## Description
 
 The Cryptocurrency Listing API offers a WebSocket endpoint for retrieving a list of different cryptocurrencies. The response includes details such as cryptocurrency ID, name, symbol, tags, CoinMarketCap rank, market pair count, circulating supply, total supply, maximum supply, high in the last 24 hours, and low in the last 24 hours.
 
-### Expected Response Format :
+## Expected Response Format :
 
 ```json
 {
@@ -89,7 +89,7 @@ The Cryptocurrency Listing API offers a WebSocket endpoint for retrieving a list
 }
 ```
 
-### Example Data :
+## Example Data :
 
 ```json
 {
@@ -123,11 +123,11 @@ The Cryptocurrency Listing API offers a WebSocket endpoint for retrieving a list
 ws://api/v1/cryptocurrency=ETH/trending-posts
 ```
 
-### Description
+## Description
 
 The Crypto-Specific Trending Posts API allows you to retrieve a list of trending articles based on a specific cryptocurrency, such as Ethereum (ETH). Connect to this WebSocket endpoint to receive real-time updates on articles related to the specified cryptocurrency.
 
-### Expected Response Format :
+## Expected Response Format :
 
 ```json
 [
@@ -154,17 +154,18 @@ The Crypto-Specific Trending Posts API allows you to retrieve a list of trending
 
 - Area chart
 - HLC Bars Chart
-- Pie chart
 
 ### Endpoint - Area chart
 
 ```shell
-ws://api/v1/cryptocurrency/detail/chart?id=1&range=1D
+ws://api/v1/cryptocurrency/detail/chart?id=1&range=1D&
 ```
 
-### Description
+## Description
 
 The Cryptocurrency Detail Chart API provides historical data points for a specific cryptocurrency, allowing you to generate detailed charts. Use this RESTful API endpoint by specifying the cryptocurrency ID and the desired time range (e.g., 1D for the last 24 hours). The response includes data points with volume, market cap, and other relevant information.
+
+## Example Data :
 
 ```json
 [
@@ -193,4 +194,62 @@ The Cryptocurrency Detail Chart API provides historical data points for a specif
 
 ### Endpoint - HLC Bars Chart
 
-### Endpoint - Pie chart
+```shell
+ws://api/v1/cryptocurrency/detail/chart?id=1&range=7D&chart=HLC
+```
+
+## Expected Response Format :
+
+```json
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "symbol": "string",
+    "quotes": [
+      {
+        "timeOpen": "string",
+        "timeClose": "string",
+        "timeHigh": "string",
+        "timeLow": "string",
+        "quote": {
+          "open": "number",
+          "high": "number",
+          "low": "number",
+          "close": "number",
+          "timestamp": "string"
+        }
+      }
+    ]
+  }
+}
+```
+
+## Example Data :
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "Bitcoin",
+    "symbol": "BTC",
+    "quotes": [
+      {
+        "timeOpen": "2013-04-01T00:00:00.000Z",
+        "timeClose": "2013-04-30T23:59:59.999Z",
+        "timeHigh": "2013-04-29T13:15:01.000Z",
+        "timeLow": "2013-04-28T20:15:02.000Z",
+        "quote": {
+          "open": 135.3000030518,
+          "high": 0.4880065918,
+          "low": 132.1000061035,
+          "close": 139.0,
+          "timestamp": "2013-04-30T23:59:59.999Z"
+        }
+      }
+    ]
+  }
+}
+```
+
+https://run.mocky.io/v3/73fead6e-8a1a-404a-b674-60e4ec5974cf
