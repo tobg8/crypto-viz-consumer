@@ -36,7 +36,6 @@ const ArticlesCrypto = () => {
     return () => {
       if (newEventSource) {
         newEventSource.close();
-
       }
     };
   }, []);
@@ -96,6 +95,7 @@ const ArticlesCrypto = () => {
               borderRadius: '8px',
               padding: '1rem',
             }}>
+              <a key={index} href={data.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color:"black" }}>
             <Box key={index} className="CardArticle">
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography
@@ -124,6 +124,7 @@ const ArticlesCrypto = () => {
                 {formattedDate}
               </Typography>
             </Box>
+          </a>
           </Grid>
         )
       })}
