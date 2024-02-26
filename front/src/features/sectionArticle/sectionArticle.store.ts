@@ -25,7 +25,7 @@ class HomePageArticlesStore {
     fetchHomePageArticles: async () => {
       try {
         set({ isLoading: true, error: null });
-        const eventSource = new EventSource('http://localhost:3001/articles');
+        const eventSource = new EventSource('http://localhost:3001/articles',  {withCredentials: true});
         eventSource.onmessage = (event) => {
           const updatedArticle = JSON.parse(event.data);
           set(() => ({
