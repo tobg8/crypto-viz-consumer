@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsExporting from 'highcharts/modules/exporting';
@@ -25,6 +25,7 @@ import { BootstrapInput, StyledToggleButton } from './chartLineStyle';
 import PopUpTrandingView from '../popUpTrandingView/PopUpTrandingView';
 import { useParams } from 'react-router-dom';
 import { IChart } from 'core/chartCandles';
+import ChartCandles from '../chartCandles/ChartCandles';
 
 HighchartsExporting(Highcharts);
 HighchartsExportData(Highcharts);
@@ -42,9 +43,7 @@ interface IFetchData {
 const ChartLine = () => {
   const { id } = useParams<{ id: string }>();
   const { merged } = StoreCrypto.useStore();
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [chartData, setChartData] = useState<unknown[]>([]);
   const [sortValue, setSortValue] = useState<string>('');
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
@@ -61,10 +60,6 @@ const ChartLine = () => {
   const handleCryptoChange = (event: SelectChangeEvent) => {
     const selectedCryptoValue = event.target.value;
     setSortValue(selectedCryptoValue);
-    // if (eventSource) {
-    //   eventSource.close(); 
-    // }
-    // console.log('eventSource ASLTs', eventSource)
     fetchData({ symbol: selectedCryptoValue, chartType: 'chart', range: 1 })
   };
 
@@ -159,37 +154,6 @@ const ChartLine = () => {
       enabled: false,
     },
   });
-  // console.log('chartOptions SAUT ::+>', chartOptions)
-  // useEffect(() => {
-  //   if (sortValue)
-  //     // setChartOptions((prevOptions) => ({
-  //     //   ...prevOptions,
-  //     //   rangeSelector: {
-  //     //     ...prevOptions.rangeSelector,
-  //     //     selected: 4,
-  //     //   },
-  //     //   series: [
-  //     //     {
-  //     //       ...prevOptions.series[0],
-  //     //       data: sortChartData(chartData as never[]),
-  //     //       name: `Price (${sortValue})`,
-  //     //     },
-  //     //   ],
-  //     // }));
-
-  //     setChartOptions((prevOptions) => ({
-  //       ...prevOptions,
-  //       series: [
-  //         {
-  //           ...prevOptions.series[0],
-  //           data: sortChartData(chartData as never[]),
-  //           name: `Price (${sortValue})`,
-  //         },
-  //       ],
-  //     }));
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [sortChartData, chartData, sortValue]);
 
   const fetchData = async ({ symbol, chartType, range }: IFetchData): Promise<void> => {
     // try {
@@ -200,7 +164,6 @@ const ChartLine = () => {
     const newEventSource = new EventSource(
       `http://localhost:3001/prices/${symbol}/${chartType}/${range}`
     );
-    // console.log('newEventSource:+>', newEventSource)
 
     newEventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -208,9 +171,6 @@ const ChartLine = () => {
         parseInt(item.timestamp),
         parseFloat(item.value),
       ]);
-
-      // console.log('transformedData', transformedData)
-      // setChartData((prevData) => [...prevData, transformedData]);
 
       setChartOptions((prevOptions) => ({
         ...prevOptions,
@@ -222,7 +182,7 @@ const ChartLine = () => {
           {
             ...prevOptions.series[0],
             data: sortChartData(transformedData as never[]),
-            name: `Price (${sortValue})`,
+            name: `Price (${filterItems?.symbol?.toLocaleUpperCase()})`,
           },
         ],
       }));
@@ -245,7 +205,6 @@ const ChartLine = () => {
 
   useEffect(() => {
     if (filterItems && filterItems.symbol) fetchData({ symbol: filterItems?.symbol, chartType: 'chart', range: 1 });
-    // return () => { if (eventSource) eventSource.close() };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -296,14 +255,13 @@ const ChartLine = () => {
             </StyledToggleButton>
           </Paper>
         </Box>
-        <Button onClick={() => setOpenTrandingView(true)} sx={{ fontSize: 16, fontWeight: 400, boxShadow: 'none', backgroundColor: '#eff2f5' }} variant="contained" startIcon={<CandlestickChartOutlinedIcon />}>TrandingView</Button>
       </Stack >
       <HighchartsReact
         highcharts={Highcharts}
         constructorType={'stockChart'}
         options={chartOptions}
       />
-      <PopUpTrandingView />
+      <ChartCandles />
     </>
   );
 };

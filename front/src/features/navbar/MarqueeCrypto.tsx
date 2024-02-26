@@ -39,7 +39,7 @@ const MarqueeCrypto = () => {
       padding: '0 16px 0 16px',
       marginRight: 'auto',
       marginLeft: 'auto',
-      maxWidth: '1350px',
+      maxWidth: '1450px',
     }}>
       <Box sx={{ display: 'flex', py: 0.5 }}>
         <Marquee speed={40} gradient={false} direction='left' style={{ gap: '24px' }}>

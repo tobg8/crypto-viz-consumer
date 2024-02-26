@@ -58,27 +58,25 @@ const CryptoStats = () => {
             <Box sx={{ display: 'flex', gap: '.5rem', flexWrap: 'wrap', pb: '1rem' }}>
               <Stack>
                 <TypographyTitle>changement de prix 24h</TypographyTitle>
-                <TypographyTitlePrice>{stats.price_change_24h}</TypographyTitlePrice>
-              </Stack>
-              <Stack>
-                <TypographyTitle>changement de prix 24h en %</TypographyTitle>
-                <TypographyTitlePrice>{stats.price_change_percentage_24h}</TypographyTitlePrice>
+                <TypographyTitlePrice>
+                  ${stats.price_change_24h && stats.price_change_24h.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}
+                </TypographyTitlePrice>
               </Stack>
               <Stack>
                 <TypographyTitle>approvisionnement en circulation</TypographyTitle>
-                <TypographyTitlePrice>${stats.circulating_supply}</TypographyTitlePrice>
+                <TypographyTitlePrice>${stats.circulating_supply && stats.circulating_supply.toLocaleString('en-US')}</TypographyTitlePrice>
               </Stack>
               <Stack>
                 <TypographyTitle>Volume Total</TypographyTitle>
-                <TypographyTitlePrice>${stats.total_volume}</TypographyTitlePrice>
+                <TypographyTitlePrice>${stats.total_volume && stats.total_volume.toLocaleString('en-US')}</TypographyTitlePrice>
               </Stack>
               <Stack>
                 <TypographyTitle>Valorisation entièrement diluée</TypographyTitle>
-                <TypographyTitlePrice>${stats.fully_diluted_valuation}</TypographyTitlePrice>
+                <TypographyTitlePrice>${stats.fully_diluted_valuation && stats.fully_diluted_valuation.toLocaleString('en-US')}</TypographyTitlePrice>
               </Stack>
               <Stack>
                 <TypographyTitle>approvisionnement total</TypographyTitle>
-                <TypographyTitlePrice>${stats.total_supply}</TypographyTitlePrice>
+                <TypographyTitlePrice>${stats.total_supply && stats.total_supply.toLocaleString('en-US')}</TypographyTitlePrice>
               </Stack>
             </Box>
           </Box>

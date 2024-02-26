@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import Spinner from 'component/Spinner';
 import { CardArticle } from 'component/CardArticle';
 import { Box, Typography } from '@mui/material';
-import Marquee from 'react-fast-marquee';
 
 const CryptoTrendingPosts = () => {
   const { id } = useParams<{ id?: string }>();
@@ -16,29 +15,28 @@ const CryptoTrendingPosts = () => {
   }, []);
 
   const filterItemsArtciles = itemsArtciles.filter((article) => article.currencies.includes(id ?? ''));
+
   if (isLoading) return <Spinner />;
 
   return (
     <Box sx={{
       display: 'flex',
       flexDirection: 'column',
+      gap: '1rem'
     }}>
       {filterItemsArtciles && filterItemsArtciles.length ? <Typography fontSize={'24px'} fontWeight={700}>You may be interested in these crypto articles</Typography> : null}
       <Box sx={{
-        display: 'grid',
-        justifyItems: 'center',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(316px, 1fr))',
-        gap: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem'
       }}>
-        <Marquee speed={40} gradient={false} direction='left' style={{ padding: '10px' }}>
-          {filterItemsArtciles && filterItemsArtciles.map((data, index) => {
-            return (
-              <Box mx={1} key={index}>
-                <CardArticle options={data} />
-              </Box>
-            )
-          })}
-        </Marquee>
+        {filterItemsArtciles && filterItemsArtciles.map((data, index) => {
+          return (
+            <Box key={index}>
+              <CardArticle options={data} />
+            </Box>
+          )
+        })}
       </Box>
     </Box>
   );

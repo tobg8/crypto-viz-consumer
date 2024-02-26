@@ -14,7 +14,7 @@ const Layout = () => {
           padding: '16px 16px 0 16px',
           marginRight: 'auto',
           marginLeft: 'auto',
-          maxWidth: '1350px',
+          maxWidth: '1450px',
         }}
       >
         <Outlet />

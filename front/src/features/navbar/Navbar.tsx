@@ -51,7 +51,7 @@ const Navbar = () => {
           padding: '0 16px 0 16px',
           marginRight: 'auto',
           marginLeft: 'auto',
-          maxWidth: '1350px',
+          maxWidth: '1450px',
         }}
       >
         <Toolbar disableGutters>
