@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import CryptoStats from 'features/cryptoCurrencies/cryptoStats/CryptoStats';
 import ChartLine from 'features/cryptoCurrencies/chartLine/ChartLine';
-// import CryptoTrendingPosts from 'features/cryptoCurrencies/cryptoTrendingPosts/CryptoTrendingPosts';
+import CryptoTrendingPosts from 'features/cryptoCurrencies/cryptoTrendingPosts/CryptoTrendingPosts';
 import StoreTrending from '../../features/trending/trending.store';
 import { useEffect } from 'react';
 import { CardArticleWrapper } from 'component/CardArticle/style';
@@ -32,11 +32,11 @@ const CryptoCurrencies = () => {
           </CardArticleWrapper>
         </Grid>
         <Divider orientation="vertical" variant="middle" flexItem />
-        {/*  sx={{ display: 'inline-grid' }} */}
         <Grid item xs={9}>
           <ChartLine />
-          {/* <CryptoTrendingPosts /> */}
         </Grid>
+        <Divider orientation="vertical" variant="middle" flexItem />
+        <CryptoTrendingPosts />
       </Grid>
     </Box>
   )

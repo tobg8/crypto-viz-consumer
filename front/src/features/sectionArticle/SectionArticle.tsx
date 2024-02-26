@@ -14,15 +14,15 @@ const SectionArticle = () => {
     itemsArticles.sort((a, b) => {
       const dateA = new Date(a.updated);
       const dateB = new Date(b.updated);
-  
+
       return dateB.getTime() - dateA.getTime();
     });
-  
+
     return itemsArticles;
   }
 
   useEffect(() => {
-    const newEventSource = new EventSource('http://localhost:3001/articles', {withCredentials: true});
+    const newEventSource = new EventSource('http://localhost:3001/articles', { withCredentials: true });
 
     setEventSource(newEventSource);
 
@@ -32,9 +32,8 @@ const SectionArticle = () => {
     };
     newEventSource.onmessage = (event) => {
       const updatedArticle = JSON.parse(event.data);
-      const oldArticles = itemsArticles
-
-      setItemsArticles((orderArticlesByUpdated([...updatedArticle, ...oldArticles])));
+      console.log('updatedArticle', updatedArticle)
+      setItemsArticles(updatedArticle);
     };
 
     newEventSource.onerror = () => {
@@ -84,6 +83,14 @@ const SectionArticle = () => {
   if (isLoading) return <SectionArticleSkeleton />;
   if (error) return <div>Error: {error}</div>;
 
+  const extractRelativeURL = (url: string) => {
+    if (url.startsWith('http://localhost:3000/')) {
+      return url.substring(url.indexOf('/', 8));
+    } else {
+      return url;
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -94,15 +101,17 @@ const SectionArticle = () => {
         gap: '16px',
       }}
     >
-    {itemsArticles.slice(0, 3).map((data, index) => {
-      return (
-        <a key={index} href={data.url} target="_blank" rel="noopener noreferrer" style={{color: "black", textDecoration:"none"}}>
-          <CardArticle options={data} />
-        </a>
-      );
-    })}
-  </Box>
-    );
+      {itemsArticles.slice(0, 3).map((data, index) => {
+        // eslint-disable-next-line no-useless-escape
+        const relativeURL = data.url.replace(/^https?:\/\/[^\/]+/, '');
+        return (
+          <a key={index} href={relativeURL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+            <CardArticle options={data} />
+          </a>
+        )
+      })}
+    </Box>
+  );
 };
 
 export default SectionArticle;

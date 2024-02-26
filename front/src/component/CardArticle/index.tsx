@@ -50,7 +50,7 @@ export const CardArticle: FC<ICardArticleProps> = (
             {formattedDate}
           </Typography>
         </Box>
-      </CardArticleWrapper >
+      </CardArticleWrapper>
     )
   }
 );
