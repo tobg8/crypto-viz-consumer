@@ -64,7 +64,7 @@ const ChartLine = () => {
     // if (eventSource) {
     //   eventSource.close(); 
     // }
-    console.log('eventSource ASLTs', eventSource)
+    // console.log('eventSource ASLTs', eventSource)
     fetchData({ symbol: selectedCryptoValue, chartType: 'chart', range: 1 })
   };
 
@@ -159,7 +159,7 @@ const ChartLine = () => {
       enabled: false,
     },
   });
-  console.log('chartOptions SAUT ::+>', chartOptions)
+  // console.log('chartOptions SAUT ::+>', chartOptions)
   // useEffect(() => {
   //   if (sortValue)
   //     // setChartOptions((prevOptions) => ({
@@ -200,7 +200,7 @@ const ChartLine = () => {
     const newEventSource = new EventSource(
       `http://localhost:3001/prices/${symbol}/${chartType}/${range}`
     );
-    console.log('newEventSource:+>', newEventSource)
+    // console.log('newEventSource:+>', newEventSource)
 
     newEventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -209,7 +209,7 @@ const ChartLine = () => {
         parseFloat(item.value),
       ]);
 
-      console.log('transformedData', transformedData)
+      // console.log('transformedData', transformedData)
       // setChartData((prevData) => [...prevData, transformedData]);
 
       setChartOptions((prevOptions) => ({
