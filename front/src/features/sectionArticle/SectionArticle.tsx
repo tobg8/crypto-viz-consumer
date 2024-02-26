@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
+import Store from './sectionArticle.store';
 import SectionArticleSkeleton from './sectionArticle.skeleton';
 import { CardArticle } from 'component/CardArticle';
 import { IArticles } from 'core/articles';
@@ -9,6 +10,8 @@ const SectionArticle = () => {
   const [error, setError] = useState<string | null>(null);
   const [itemsArticles, setItemsArticles] = useState<IArticles[]>([]);
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
+
+  const { fetchHomePageArticles} = Store.useStore((state) => state);
 
   function orderArticlesByUpdated(itemsArticles: IArticles[]): IArticles[] {
     itemsArticles.sort((a, b) => {
@@ -32,8 +35,9 @@ const SectionArticle = () => {
     };
     newEventSource.onmessage = (event) => {
       const updatedArticle = JSON.parse(event.data);
-      console.log('updatedArticle', updatedArticle)
-      setItemsArticles(updatedArticle);
+      const oldArticles = itemsArticles
+
+      setItemsArticles((orderArticlesByUpdated([...updatedArticle, ...oldArticles])));
     };
 
     newEventSource.onerror = () => {
@@ -52,16 +56,15 @@ const SectionArticle = () => {
   useEffect(() => {
     if (eventSource) {
       eventSource.onopen = () => {
-
         setIsLoading(false);
         setError(null);
       };
 
       eventSource.onmessage = (event) => {
         const updatedArticle = JSON.parse(event.data);
-        console.log(itemsArticles)
+        const oldArticles = itemsArticles
 
-        setItemsArticles([...updatedArticle, ...itemsArticles])
+        setItemsArticles([...updatedArticle, ...oldArticles])
       };
 
       eventSource.onerror = () => {
@@ -78,7 +81,7 @@ const SectionArticle = () => {
         eventSource.onerror = null;
       }
     };
-  }, [eventSource]);
+  }, [itemsArticles]);
 
   if (isLoading) return <SectionArticleSkeleton />;
   if (error) return <div>Error: {error}</div>;
@@ -105,7 +108,7 @@ const SectionArticle = () => {
         // eslint-disable-next-line no-useless-escape
         const relativeURL = data.url.replace(/^https?:\/\/[^\/]+/, '');
         return (
-          <a key={index} href={relativeURL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+          <a key={index} href={relativeURL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color:"black" }}>
             <CardArticle options={data} />
           </a>
         )

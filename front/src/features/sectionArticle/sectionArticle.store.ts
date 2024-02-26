@@ -15,7 +15,7 @@ const defaultValue = {
 };
 
 class HomePageArticlesStore {
-  useStore = create<IUseHomePageArticlesStore>()((set) => ({
+  useStore = create<IUseHomePageArticlesStore>()((set, get) => ({
     ...defaultValue,
     reset: () =>
       set(() => ({
@@ -28,8 +28,10 @@ class HomePageArticlesStore {
         const eventSource = new EventSource('http://localhost:3001/articles',  {withCredentials: true});
         eventSource.onmessage = (event) => {
           const updatedArticle = JSON.parse(event.data);
+          const {itemsArtciles} = get()
+          console.log(itemsArtciles)
           set(() => ({
-            itemsArtciles: updatedArticle,
+            itemsArtciles: [...updatedArticle, ...itemsArtciles],
             isLoading: false,
           }));
         };

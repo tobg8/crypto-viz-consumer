@@ -39,7 +39,7 @@ class ListingCurrenciesStore {
     fetchCurrency: async () => {
       try {
         set({ isLoading: true, error: null });
-        const response = await axios.get('http://localhost:3001/currencies', {withCredentials: true});
+        const response = await axios.get('http://localhost:3001/currencies');
         set({ itemsCurrency: response.data, isLoading: false });
       } catch (error) {
         set({ error: 'Failed to fetch currency', isLoading: false });
@@ -49,7 +49,7 @@ class ListingCurrenciesStore {
     fetchListing: async () => {
       try {
         set({ isLoading: true, error: null });
-        const eventSource = new EventSource('http://localhost:3001/listings', {withCredentials: true});
+        const eventSource = new EventSource('http://localhost:3001/listings');
         eventSource.onmessage = (event) => {
           const updatedListings = JSON.parse(event.data);
           const { itemsListing } = get();
@@ -70,7 +70,6 @@ class ListingCurrenciesStore {
         };
 
         eventSource.onerror = () => {
-
           eventSource.close()
         };
       } catch (error) {

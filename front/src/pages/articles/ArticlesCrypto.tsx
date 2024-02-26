@@ -8,30 +8,68 @@ const ArticlesCrypto = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [itemsArticles, setItemsArticles] = useState<IArticles[]>([]);
+  const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
+  
   useEffect(() => {
-    const eventSource = new EventSource('http://localhost:3001/articles');
-
-    eventSource.onopen = () => {
+    const newEventSource = new EventSource('http://localhost:3001/articles', {withCredentials: true});
+    setEventSource(newEventSource)
+    newEventSource.onopen = () => {
       setIsLoading(false);
       setError(null);
     };
 
-    eventSource.onmessage = (event) => {
-      const updatedArticle = JSON.parse(event.data);
+    console.log("here", itemsArticles)
 
-      setItemsArticles(updatedArticle);
+    newEventSource.onmessage = (event) => {
+      const updatedArticle = JSON.parse(event.data);
+      const oldArticles = itemsArticles
+      console.log(oldArticles)
+      setItemsArticles([...updatedArticle, ...oldArticles]);
     };
 
-    eventSource.onerror = () => {
+    newEventSource.onerror = () => {
       setIsLoading(false);
       setError('Failed to fetch articles');
     };
 
     return () => {
-      eventSource.close();
+      if (newEventSource) {
+        newEventSource.close();
+
+      }
     };
   }, []);
+
+  useEffect(() => {
+    if (eventSource) {
+      eventSource.onopen = () => {
+        setIsLoading(false);
+        setError(null);
+      };
+
+      eventSource.onmessage = (event) => {
+        const updatedArticle = JSON.parse(event.data);
+        const oldArticles = itemsArticles
+
+        setItemsArticles([...updatedArticle, ...oldArticles])
+      };
+
+      eventSource.onerror = () => {
+        console.log("error")
+        setIsLoading(false);
+        setError('Failed to fetch articles');
+      };
+    }
+
+    return () => {
+      if (eventSource) {
+        eventSource.onopen = null;
+        eventSource.onmessage = null;
+        eventSource.onerror = null;
+      }
+    };
+  }, [itemsArticles]);
 
   const getRandomEmojis = () => {
     const emojis = ['🔥', '🚀', '💡', '🌟', '✨'];
