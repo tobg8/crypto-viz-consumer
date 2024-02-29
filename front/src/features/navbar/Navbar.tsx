@@ -8,10 +8,6 @@ import {
   Menu,
   MenuItem,
   Divider,
-  FormControl,
-  InputLabel,
-  Select,
-  SelectChangeEvent,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SsidChartIcon from '@mui/icons-material/SsidChart';
@@ -25,11 +21,6 @@ const pages: { title: string; link: string }[] = [
 const Navbar = () => {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState<HTMLElement | null>(null);
-  const [age, setAge] = useState('');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value);
-  };
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -147,20 +138,6 @@ const Navbar = () => {
               </Typography>
             ))}
           </Box>
-          <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-            <InputLabel id="demo-select-small-label">🇫🇷</InputLabel>
-            <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={age}
-              label="Age"
-              onChange={handleChange}
-            >
-              <MenuItem value={10}>🇬🇧</MenuItem>
-              <MenuItem value={20}>🇨🇳</MenuItem>
-              <MenuItem value={30}>🇪🇸</MenuItem>
-            </Select>
-          </FormControl>
         </Toolbar>
       </AppBar>
       <Divider />

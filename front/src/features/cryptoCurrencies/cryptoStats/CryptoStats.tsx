@@ -42,16 +42,16 @@ const CryptoStats = () => {
                 {stats.identifier && stats.identifier.charAt(0).toUpperCase()}
                 {stats.identifier && stats.identifier.slice(1)}
               </Typography>
-              <Typography sx={{ color: '#808080', ml: 1, fontSize: '1rem', fontWeight: 500 }}>{stats.symbol?.toLocaleUpperCase()}</Typography>
+              <Typography sx={{ color: '#808080', ml: 1, fontSize: '1rem', fontWeight: 500 }}>({stats.symbol?.toLocaleUpperCase()})</Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: '8px', alignItems: 'center', pb: '2rem' }}>
-              <Typography sx={{ fontWeight: '500' }}>{stats.current_price} $US</Typography>
+              <Typography sx={{ fontWeight: '500', fontSize: '16px' }}>{stats.current_price} $US</Typography>
               {isPositive === 'positive' ? (
                 <ArrowDropUpRoundedIcon style={{ fontSize: '2.5rem', color: '#16c784' }} />
               ) : (
                 <ArrowDropDownRoundedIcon style={{ fontSize: '2.5rem', color: '#ea3943' }} />
               )}
-              <Typography sx={{ color: isPositive === 'positive' ? '#16c784' : '#ea3943', }}>
+              <Typography sx={{ color: isPositive === 'positive' ? '#16c784' : '#ea3943', fontSize: '16px' }}>
                 {stats.price_change_percentage_24h && stats.price_change_percentage_24h.toFixed(3)} %
               </Typography>
             </Box>
