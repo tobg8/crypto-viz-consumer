@@ -49,13 +49,9 @@ const initialData = {
     }
   }],
   series: [{
-    // id: 'main',
     type: 'candlestick',
     color: '#ea3943',
     upColor: '#16C784',
-    // dataGrouping: {
-    //   enabled: false
-    // },
     pointWidth: 10
   }],
 }
@@ -64,18 +60,16 @@ const ChartCandles = () => {
   const [ohlcOptions, setOhlcOptions] = useState(initialData);
   const { id } = useParams<{ id: string }>();
   const { merged } = StoreCrypto.useStore();
-
   const filterItems = merged.find((e) => e.currency_id === id)
 
   useEffect(() => {
-    // if (!filterItems) return;
+    if (!filterItems) return;
 
     const newEventSource = new EventSource(
       `http://localhost:3001/ohlc/${filterItems?.symbol}/ohlc/1`
     );
     newEventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const transformedData = data.map((item: any) => [
         parseInt(item.timestamp),
         parseFloat(item.high),
@@ -86,18 +80,19 @@ const ChartCandles = () => {
 
       setOhlcOptions((prevOptions) => ({
         ...prevOptions,
-        series: [
-          {
-            ...prevOptions.series[0],
-            data: transformedData,
-            name: `Price (${filterItems?.symbol?.toLocaleUpperCase()})`,
-          },
-        ],
+        series: [{
+          ...prevOptions.series[0],
+          data: transformedData,
+          name: `Price (${filterItems?.symbol?.toLocaleUpperCase()})`,
+        }],
       }));
     };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    return () => {
+      newEventSource.close();
+    };
+
+  }, [filterItems])
 
   return <HighchartsReact highcharts={Highcharts} options={ohlcOptions} />
 };
