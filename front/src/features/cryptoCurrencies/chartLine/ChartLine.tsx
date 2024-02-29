@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsExporting from 'highcharts/modules/exporting';
 import HighchartsExportData from 'highcharts/modules/export-data';
 import StoreCrypto from '../../listingCurrencies/listingCurrencies.store';
 import {
-  ToggleButton,
-  Paper,
-  Divider,
-  Stack,
-  Box,
   Typography,
 } from '@mui/material';
-import ShowChartRoundedIcon from '@mui/icons-material/ShowChartRounded';
-import WaterfallChartRoundedIcon from '@mui/icons-material/WaterfallChartRounded';
-import { StyledToggleButton } from './chartLineStyle';
 import { useParams } from 'react-router-dom';
 import { IChart } from 'core/chartCandles';
 import ChartCandles from '../chartCandles/ChartCandles';
@@ -31,32 +23,111 @@ const ChartLine = () => {
   const { merged } = StoreCrypto.useStore();
   const [error, setError] = useState<string | null>(null);
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
-  const [alignment, setAlignment] = useState('left');
-
-  const handleAlignment = (
-    _: React.MouseEvent<HTMLElement>,
-    newAlignment: string,
-  ) => {
-    setAlignment(newAlignment);
-  };
+  const filterItems = merged.find((e) => e.currency_id === id)
 
   const [chartOptions, setChartOptions] = useState({
     rangeSelector: {
       buttons: [
         {
+          type: 'weekth',
+          count: 1,
+          text: '1d',
+          events: {
+            click: function () {
+              console.log('ONCLICK 1D')
+              if (filterItems && filterItems.symbol) {
+                const count = 1;
+                if (eventSource) {
+                  eventSource.close();
+                }
+                const newEventSource = new EventSource(
+                  `http://localhost:3001/prices/${filterItems.symbol}/chart/${count}`
+                );
+                console.log('<=:: newEventSource INSIDE RANGE::=>', newEventSource)
+                newEventSource.onmessage = (event) => {
+                  const data = JSON.parse(event.data);
+                  const transformedData = data.map((item: IChart) => [
+                    parseInt(item.timestamp),
+                    parseFloat(item.value),
+                  ]);
+                  console.log('transformedData INSIDE RANGE 1D::=>', transformedData)
+                  setChartOptions((prevOptions) => ({
+                    ...prevOptions,
+                    rangeSelector: {
+                      ...prevOptions.rangeSelector,
+                      selected: 4,
+                    },
+                    series: [
+                      {
+                        ...prevOptions.series[0],
+                        data: sortChartData(transformedData as never[]),
+                        name: `Price (${filterItems?.symbol?.toLocaleUpperCase()})`,
+                      },
+                    ],
+                  }));
+                };
+                newEventSource.onerror = (error) => {
+                  console.error('EventSource failed:', error);
+                  newEventSource.close();
+                  setError('Failed to fetch data');
+                };
+                setEventSource(newEventSource);
+              }
+            }
+          },
+        },
+        {
+          type: 'weekth',
+          count: 7,
+          text: '7d',
+          events: {
+            click: function () {
+              console.log('ONCLICK 7D')
+              if (filterItems && filterItems.symbol) {
+                const count = 7;
+                if (eventSource) {
+                  eventSource.close();
+                }
+                const newEventSource = new EventSource(
+                  `http://localhost:3001/prices/${filterItems?.symbol && filterItems.symbol}/chart/${count}`
+                );
+                console.log('<=:: newEventSource INSIDE RANGE::=>', newEventSource)
+                newEventSource.onmessage = (event) => {
+                  const data = JSON.parse(event.data);
+                  const transformedData = data.map((item: IChart) => [
+                    parseInt(item.timestamp),
+                    parseFloat(item.value),
+                  ]);
+                  console.log('transformedData INSIDE RANGE 7D::=>', transformedData)
+                  setChartOptions((prevOptions) => ({
+                    ...prevOptions,
+                    rangeSelector: {
+                      ...prevOptions.rangeSelector,
+                      selected: 4,
+                    },
+                    series: [
+                      {
+                        ...prevOptions.series[0],
+                        data: sortChartData(transformedData as never[]),
+                        name: `Price (${filterItems?.symbol?.toLocaleUpperCase()})`,
+                      },
+                    ],
+                  }));
+                };
+                newEventSource.onerror = (error) => {
+                  console.error('EventSource failed:', error);
+                  newEventSource.close();
+                  setError('Failed to fetch data');
+                };
+                setEventSource(newEventSource);
+              }
+            }
+          },
+        },
+        {
           type: 'month',
           count: 1,
           text: '1m',
-        },
-        {
-          type: 'month',
-          count: 3,
-          text: '3m',
-        },
-        {
-          type: 'month',
-          count: 6,
-          text: '6m',
         },
         {
           type: 'ytd',
@@ -132,7 +203,6 @@ const ChartLine = () => {
     },
   });
 
-  const filterItems = merged.find((e) => e.currency_id === id)
 
   useEffect(() => {
     if (filterItems && filterItems.symbol) {
@@ -181,34 +251,6 @@ const ChartLine = () => {
 
   return (
     <>
-      <Stack flexDirection={'row'} gap={2} justifyContent={'space-between'}>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Paper
-            elevation={0}
-            sx={{
-              display: 'flex',
-              backgroundColor: '#eff2f5',
-              borderRadius: 2
-            }}
-          >
-            <StyledToggleButton
-              size="small"
-              value={alignment}
-              exclusive
-              onChange={handleAlignment}
-              aria-label="text alignment"
-            >
-              <ToggleButton value="right" aria-label="right">
-                <ShowChartRoundedIcon sx={{ fontSize: 24 }} />
-              </ToggleButton>
-              <Divider flexItem orientation="vertical" sx={{ width: '2px' }} />
-              <ToggleButton value="right" aria-label="right">
-                <WaterfallChartRoundedIcon sx={{ fontSize: 24 }} />
-              </ToggleButton>
-            </StyledToggleButton>
-          </Paper>
-        </Box>
-      </Stack >
       <HighchartsReact
         highcharts={Highcharts}
         constructorType={'stockChart'}

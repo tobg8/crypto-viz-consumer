@@ -70,6 +70,7 @@ const ChartCandles = () => {
     );
     newEventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const transformedData = data.map((item: any) => [
         parseInt(item.timestamp),
         parseFloat(item.high),

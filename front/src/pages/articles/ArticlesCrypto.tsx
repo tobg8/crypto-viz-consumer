@@ -10,21 +10,19 @@ const ArticlesCrypto = () => {
   const [itemsArticles, setItemsArticles] = useState<IArticles[]>([]);
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
-  
+
   useEffect(() => {
-    const newEventSource = new EventSource('http://localhost:3001/articles', {withCredentials: true});
+    const newEventSource = new EventSource('http://localhost:3001/articles', { withCredentials: true });
     setEventSource(newEventSource)
     newEventSource.onopen = () => {
       setIsLoading(false);
       setError(null);
     };
 
-    console.log("here", itemsArticles)
 
     newEventSource.onmessage = (event) => {
       const updatedArticle = JSON.parse(event.data);
       const oldArticles = itemsArticles
-      console.log(oldArticles)
       setItemsArticles([...updatedArticle, ...oldArticles]);
     };
 
@@ -68,6 +66,7 @@ const ArticlesCrypto = () => {
         eventSource.onerror = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsArticles]);
 
   const getRandomEmojis = () => {
@@ -78,8 +77,6 @@ const ArticlesCrypto = () => {
 
   if (isLoading) return <div>loading</div>;
   if (error) return <div>Error: {error}</div>;
-
-  console.log('itemsArticles SALT', itemsArticles)
 
   return (
     <Grid container sx={{
@@ -95,36 +92,36 @@ const ArticlesCrypto = () => {
               borderRadius: '8px',
               padding: '1rem',
             }}>
-              <a key={index} href={data.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color:"black" }}>
-            <Box key={index} className="CardArticle">
-              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography
-                  sx={{
-                    backgroundColor: theme.palette.primary.main,
-                    fontWeight: 600,
-                    fontSize: '20px',
-                  }}
-                >{data.source} {getRandomEmojis().map((emoji, index) => <span key={index}>{emoji}</span>)}</Typography>
+            <a key={index} href={data.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: "black" }}>
+              <Box key={index} className="CardArticle">
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography
+                    sx={{
+                      backgroundColor: theme.palette.primary.main,
+                      fontWeight: 600,
+                      fontSize: '20px',
+                    }}
+                  >{data.source} {getRandomEmojis().map((emoji, index) => <span key={index}>{emoji}</span>)}</Typography>
+                </Box>
+                <Typography sx={{
+                  fontWeight: 500,
+                  fontSize: '20px',
+                  display: 'flex',
+                  gap: '10px'
+                }}>
+                  {data.title}
+                </Typography>
+                <Typography sx={{
+                  color: 'rgb(88, 102, 126)',
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  display: 'flex',
+                  gap: '10px'
+                }}>
+                  {formattedDate}
+                </Typography>
               </Box>
-              <Typography sx={{
-                fontWeight: 500,
-                fontSize: '20px',
-                display: 'flex',
-                gap: '10px'
-              }}>
-                {data.title}
-              </Typography>
-              <Typography sx={{
-                color: 'rgb(88, 102, 126)',
-                fontWeight: 400,
-                fontSize: '14px',
-                display: 'flex',
-                gap: '10px'
-              }}>
-                {formattedDate}
-              </Typography>
-            </Box>
-          </a>
+            </a>
           </Grid>
         )
       })}

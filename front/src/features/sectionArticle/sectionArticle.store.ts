@@ -25,11 +25,12 @@ class HomePageArticlesStore {
     fetchHomePageArticles: async () => {
       try {
         set({ isLoading: true, error: null });
-        const eventSource = new EventSource('http://localhost:3001/articles',  {withCredentials: true});
+        const eventSource = new EventSource('http://localhost:3001/articles', {
+          withCredentials: true,
+        });
         eventSource.onmessage = (event) => {
           const updatedArticle = JSON.parse(event.data);
-          const {itemsArtciles} = get()
-          console.log(itemsArtciles)
+          const { itemsArtciles } = get();
           set(() => ({
             itemsArtciles: [...updatedArticle, ...itemsArtciles],
             isLoading: false,

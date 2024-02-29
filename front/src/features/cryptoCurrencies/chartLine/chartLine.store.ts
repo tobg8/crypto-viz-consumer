@@ -17,7 +17,6 @@ interface IChartLineStore {
   setSortValue: (sortValue: string) => void;
   openTrandingView: boolean;
   setOpenTrandingView: (openPopUp: boolean) => void;
-  // eventSource: EventSource | null;
 }
 
 const defaultValue = {
@@ -26,7 +25,6 @@ const defaultValue = {
   error: null,
   sortValue: '',
   openTrandingView: false,
-  // eventSource: null as EventSource | null,
 };
 
 class ChartLineStore {
@@ -50,19 +48,12 @@ class ChartLineStore {
     },
     fetchData: async ({ symbol, chartType, range }) => {
       try {
-        // console.log('INSIDE STORE');
         set({ isLoading: true, error: null });
-
-        // if (defaultValue.eventSource) {
-        //   defaultValue.eventSource.close();
-        // }
 
         const eventSource = new EventSource(
           `http://localhost:3001/prices/${symbol}/${chartType}/${range}`
         );
 
-        // console.log('INSIDE STORE EVENT ::+>', eventSource);
-        // console.log('READY STATE ::+>>>>>', eventSource.readyState);
         eventSource.onmessage = (event) => {
           const updatedArticle = JSON.parse(event.data);
           const transformedData = updatedArticle.map((item: IChart) => [
@@ -70,15 +61,12 @@ class ChartLineStore {
             parseFloat(item.value),
           ]);
 
-          // console.log('<=:: transformedData ::=>', transformedData);
           set(() => ({
             chartData: transformedData,
             isLoading: false,
           }));
         };
-        // set({ eventSource });
       } catch (error) {
-        console.log('CATCH ERROR');
         set({ error: 'Failed to fetch data', isLoading: false });
       }
     },
