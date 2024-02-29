@@ -83,45 +83,46 @@ const ChartLine = () => {
           events: {
             click: function () {
               console.log('ONCLICK 7D')
-              if (filterItems && filterItems.symbol) {
-                const count = 7;
-                if (eventSource) {
-                  eventSource.close();
-                }
-                const newEventSource = new EventSource(
-                  `http://localhost:3001/prices/${filterItems?.symbol && filterItems.symbol}/chart/${count}`
-                );
-                console.log('<=:: newEventSource INSIDE RANGE::=>', newEventSource)
-                newEventSource.onmessage = (event) => {
-                  const data = JSON.parse(event.data);
-                  const transformedData = data.map((item: IChart) => [
-                    parseInt(item.timestamp),
-                    parseFloat(item.value),
-                  ]);
-                  console.log('transformedData INSIDE RANGE 7D::=>', transformedData)
-                  setChartOptions((prevOptions) => ({
-                    ...prevOptions,
-                    rangeSelector: {
-                      ...prevOptions.rangeSelector,
-                      selected: 4,
-                    },
-                    series: [
-                      {
-                        ...prevOptions.series[0],
-                        data: sortChartData(transformedData as never[]),
-                        name: `Price (${filterItems?.symbol?.toLocaleUpperCase()})`,
-                      },
-                    ],
-                  }));
-                };
-                newEventSource.onerror = (error) => {
-                  console.error('EventSource failed:', error);
-                  newEventSource.close();
-                  setError('Failed to fetch data');
-                };
-                setEventSource(newEventSource);
+              // if (filterItems && filterItems.symbol) {
+              const count = 7;
+              console.log('INSIDE ONCLICK 7D')
+              if (eventSource) {
+                eventSource.close();
               }
+              const newEventSource = new EventSource(
+                `http://localhost:3001/prices/${filterItems?.symbol}/chart/${count}`
+              );
+              console.log('<=:: newEventSource INSIDE RANGE::=>', newEventSource)
+              newEventSource.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                const transformedData = data.map((item: IChart) => [
+                  parseInt(item.timestamp),
+                  parseFloat(item.value),
+                ]);
+                console.log('transformedData INSIDE RANGE 7D::=>', transformedData)
+                setChartOptions((prevOptions) => ({
+                  ...prevOptions,
+                  rangeSelector: {
+                    ...prevOptions.rangeSelector,
+                    selected: 4,
+                  },
+                  series: [
+                    {
+                      ...prevOptions.series[0],
+                      data: sortChartData(transformedData as never[]),
+                      name: `Price (${filterItems?.symbol?.toLocaleUpperCase()})`,
+                    },
+                  ],
+                }));
+              };
+              newEventSource.onerror = (error) => {
+                console.error('EventSource failed:', error);
+                newEventSource.close();
+                setError('Failed to fetch data');
+              };
+              setEventSource(newEventSource);
             }
+            // }
           },
         },
         {
@@ -212,6 +213,8 @@ const ChartLine = () => {
       const newEventSource = new EventSource(
         `http://localhost:3001/prices/${filterItems.symbol}/chart/1`
       );
+
+      console.log('newEventSource::=>', newEventSource)
 
       newEventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);

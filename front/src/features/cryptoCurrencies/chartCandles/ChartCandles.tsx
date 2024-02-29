@@ -48,6 +48,9 @@ const initialData = {
       strokeWidth: 2
     }
   }],
+  title: {
+    text: 'OHLC'
+  },
   series: [{
     type: 'candlestick',
     color: '#ea3943',
@@ -64,10 +67,10 @@ const ChartCandles = () => {
 
   useEffect(() => {
     if (!filterItems) return;
-
     const newEventSource = new EventSource(
       `http://localhost:3001/ohlc/${filterItems?.symbol}/ohlc/1`
     );
+    console.log('newEventSource OHLC', newEventSource)
     newEventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
